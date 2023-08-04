@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../actions/user.action';
 
 const SignIn = () => {
@@ -10,10 +10,10 @@ const SignIn = () => {
     });
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const token = useSelector((state) => state.token);
+    const token = useSelector(state => state.token);
 
     useEffect(() => {
-        if(token) {
+        if (token) {
             navigate('/profile');
         }
     }, [token]);
