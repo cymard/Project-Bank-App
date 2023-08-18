@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const LOGIN_USER = 'LOGIN_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';
 
 export const loginUser = credentials => {
     return dispatch => {
@@ -20,3 +21,5 @@ export const loginUser = credentials => {
             });
     };
 };
+
+export const logoutUser = () => ({ type: LOGOUT_USER });
