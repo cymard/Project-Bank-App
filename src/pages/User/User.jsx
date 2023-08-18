@@ -1,6 +1,18 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const User = () => {
+    const navigate = useNavigate();
+    const token = useSelector(state => state.token);
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/');
+            console.log("impossible d'acceder à la page profile sans être connecté");
+        }
+    }, [token]);
+
     useEffect(() => {
         document.title = 'Argent Bank - User Page';
     }, []);
