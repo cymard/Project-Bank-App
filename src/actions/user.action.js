@@ -13,6 +13,8 @@ export const loginUser = credentials => {
                     payload: {
                         email: credentials.email,
                         token: res.data.body.token,
+                        firstName: credentials.firstName,
+                        lastName: credentials.lastName,
                     },
                 });
             })

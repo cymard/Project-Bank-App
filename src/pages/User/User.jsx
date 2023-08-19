@@ -4,18 +4,20 @@ import { useSelector } from 'react-redux';
 
 const User = () => {
     const navigate = useNavigate();
-    const token = useSelector(state => state.token);
+    const state = useSelector(state => state);
 
     useEffect(() => {
-        if (!token) {
+        if (!state.token) {
             navigate('/');
             console.log("impossible d'acceder à la page profile sans être connecté");
         }
-    }, [token]);
+    }, [state.token]);
 
     useEffect(() => {
         document.title = 'Argent Bank - User Page';
     }, []);
+
+    const capitalizeFirstLetter = word => word.charAt(0).toUpperCase() + word.slice(1);
 
     return (
         <main className="main bg-dark">
@@ -23,7 +25,7 @@ const User = () => {
                 <h1>
                     Welcome back
                     <br />
-                    Tony Jarvis!
+                    {capitalizeFirstLetter(state.firstName) + ' ' + capitalizeFirstLetter(state.lastName)}!
                 </h1>
                 <button className="edit-button">Edit Name</button>
             </div>
