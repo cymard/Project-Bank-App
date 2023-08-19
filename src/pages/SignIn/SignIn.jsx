@@ -30,12 +30,21 @@ const SignIn = () => {
         });
     };
 
+    const extractFirstNameAndLastNameFromEmail = email => {
+        const firstName = email.substring(0, email.indexOf('@'));
+        const lastName = email.substring(email.indexOf('@') + 1, email.indexOf('.'));
+
+        return { firstName, lastName };
+    };
+
     const handleSubmit = e => {
         e.preventDefault();
-
+        const { firstName, lastName } = extractFirstNameAndLastNameFromEmail(formData.username);
         const credentials = {
             email: formData.username,
             password: formData.password,
+            firstName: firstName,
+            lastName: lastName,
         };
 
         dispatch(loginUser(credentials));

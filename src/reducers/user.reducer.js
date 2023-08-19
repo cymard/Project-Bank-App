@@ -11,6 +11,8 @@ export default function userReducer(state = initialState, action) {
                 ...state,
                 email: null,
                 token: null,
+                firstName: null,
+                lastName: null,
             };
 
         default:
