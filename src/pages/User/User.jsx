@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { editUserName } from '../../actions/user.action';
 
 const User = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const state = useSelector(state => state);
+    const [editNameFormData, setEditNameFormData] = useState({ firstName: '', lastName: '' });
+    const [isEditFormVisible, setIsEditFormVisible] = useState(false);
 
     useEffect(() => {
         if (!state.token) {
@@ -19,16 +23,63 @@ const User = () => {
 
     const capitalizeFirstLetter = word => word.charAt(0).toUpperCase() + word.slice(1);
 
+    const toggleEditForm = () => {
+        setIsEditFormVisible(prevState => !prevState);
+    };
+
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setEditNameFormData({
+            ...editNameFormData,
+            [name]: value,
+        });
+    };
+
+    const submitEditNameForm = e => {
+        e.preventDefault();
+        const credentials = {
+            ...editNameFormData,
+            token: state.token,
+        };
+        dispatch(editUserName(credentials));
+        document.getElementById('edit-name-form').reset();
+        setIsEditFormVisible(false);
+    };
+
     return (
         <main className="main bg-dark">
             <div className="header">
                 <h1>
                     Welcome back
                     <br />
-                    {capitalizeFirstLetter(state.firstName) + ' ' + capitalizeFirstLetter(state.lastName)}!
+                    {state.token && capitalizeFirstLetter(state.firstName) + ' ' + capitalizeFirstLetter(state.lastName)}!
                 </h1>
-                <button className="edit-button">Edit Name</button>
+                {!isEditFormVisible && (
+                    <button id="edit-name-btn" onClick={toggleEditForm} className="edit-button">
+                        Edit Name
+                    </button>
+                )}
             </div>
+
+            {isEditFormVisible && (
+                <form onSubmit={e => submitEditNameForm(e)} id="edit-name-form" className="d-none">
+                    <div>
+                        <label htmlFor="firstName">Prénom : </label>
+                        <input onChange={e => handleChange(e)} id="firstName" type="text" name="firstName" required={true} />
+
+                        <label htmlFor="lastName">Nom : </label>
+                        <input onChange={e => handleChange(e)} id="lastName" type="text" name="lastName" required={true} />
+
+                        <button type="submit" className="edit-button">
+                            Valider
+                        </button>
+
+                        <button type="button" onClick={toggleEditForm} className="close-button">
+                            X
+                        </button>
+                    </div>
+                </form>
+            )}
             <h2 className="sr-only">Accounts</h2>
             <section className="account">
                 <div className="account-content-wrapper">
