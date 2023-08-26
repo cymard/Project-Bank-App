@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { editUserName } from '../../actions/user.action';
+import {editUserName, getUserInformations} from '../../actions/user.action';
 
 const User = () => {
     const navigate = useNavigate();
@@ -16,6 +16,12 @@ const User = () => {
             console.log("impossible d'acceder à la page profile sans être connecté");
         }
     }, [state.token]);
+
+    useEffect(() => {
+        if(state.token) {
+            dispatch(getUserInformations(state.token));
+        }
+    }, [state.firstName, state.lastName]);
 
     useEffect(() => {
         document.title = 'Argent Bank - User Page';
@@ -52,7 +58,8 @@ const User = () => {
                 <h1>
                     Welcome back
                     <br />
-                    {state.token && capitalizeFirstLetter(state.firstName) + ' ' + capitalizeFirstLetter(state.lastName)}!
+                    {state.firstName && capitalizeFirstLetter(state.firstName) + ' '}
+                    {state.lastName && capitalizeFirstLetter(state.lastName)}
                 </h1>
                 {!isEditFormVisible && (
                     <button id="edit-name-btn" onClick={toggleEditForm} className="edit-button">

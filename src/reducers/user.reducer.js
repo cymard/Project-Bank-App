@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGOUT_USER, EDIT_USER_NAME } from '../actions/user.action';
+import { LOGIN_USER, LOGOUT_USER, EDIT_USER_NAME, GET_USER_INFORMATIONS } from '../actions/user.action';
 
 const initialState = {};
 
@@ -20,6 +20,12 @@ export default function userReducer(state = initialState, action) {
                 firstName: action.payload.firstName,
                 lastName: action.payload.lastName,
             };
+        case GET_USER_INFORMATIONS:
+            return {
+                ...state,
+                firstName: action.payload.firstName,
+                lastName: action.payload.lastName,
+            }
 
         default:
             return state;
