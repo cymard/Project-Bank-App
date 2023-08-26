@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {editUserName, getUserInformations} from '../../actions/user.action';
+import { editUserName, getUserInformations } from '../../actions/user.action';
 
 const User = () => {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const User = () => {
     }, [state.token]);
 
     useEffect(() => {
-        if(state.token) {
+        if (state.token) {
             dispatch(getUserInformations(state.token));
         }
     }, [state.firstName, state.lastName]);

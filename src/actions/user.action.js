@@ -59,11 +59,15 @@ export const editUserName = credentials => {
 export const getUserInformations = token => {
     return dispatch => {
         return axios
-            .post(process.env.REACT_APP_API_URL + 'profile',{}, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
+            .post(
+                process.env.REACT_APP_API_URL + 'profile',
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
             .then(res => {
                 dispatch({
                     type: GET_USER_INFORMATIONS,

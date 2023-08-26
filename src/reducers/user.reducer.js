@@ -23,9 +23,8 @@ export default function userReducer(state = initialState, action) {
         case GET_USER_INFORMATIONS:
             return {
                 ...state,
-                firstName: action.payload.firstName,
-                lastName: action.payload.lastName,
-            }
+                ...action.payload,
+            };
 
         default:
             return state;
