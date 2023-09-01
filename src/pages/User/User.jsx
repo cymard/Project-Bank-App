@@ -6,22 +6,25 @@ import { editUserName, getUserInformations } from '../../actions/user.action';
 const User = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const state = useSelector(state => state);
+    const firstName = useSelector(state => state.firstName);
+    const lastName = useSelector(state => state.lastName);
+    const token = useSelector(state => state.token);
     const [editNameFormData, setEditNameFormData] = useState({ firstName: '', lastName: '' });
     const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+    const [isError, setIsError] = useState({ status: false, message: '' });
 
     useEffect(() => {
-        if (!state.token) {
+        if (!token) {
             navigate('/');
             console.log("impossible d'acceder à la page profile sans être connecté");
         }
-    }, [state.token]);
+    }, [token]);
 
     useEffect(() => {
-        if (state.token) {
-            dispatch(getUserInformations(state.token));
+        if (token) {
+            dispatch(getUserInformations(token));
         }
-    }, [state.firstName, state.lastName]);
+    }, [firstName, lastName]);
 
     useEffect(() => {
         document.title = 'Argent Bank - User Page';
@@ -41,11 +44,25 @@ const User = () => {
         });
     };
 
+    const isErrorForm = () => {
+        if (editNameFormData.firstName === '' || editNameFormData.lastName === '') {
+            setIsError({ status: true, message: 'Veuillez remplir tous les champs' });
+            return true;
+        }
+
+        setIsError({ status: false, message: '' });
+        return false;
+    };
+
     const submitEditNameForm = e => {
         e.preventDefault();
+        if (isErrorForm()) {
+            return;
+        }
+
         const credentials = {
             ...editNameFormData,
-            token: state.token,
+            token: token,
         };
         dispatch(editUserName(credentials));
         document.getElementById('edit-name-form').reset();
@@ -58,8 +75,8 @@ const User = () => {
                 <h1>
                     Welcome back
                     <br />
-                    {state.firstName && capitalizeFirstLetter(state.firstName) + ' '}
-                    {state.lastName && capitalizeFirstLetter(state.lastName)}
+                    {firstName && capitalizeFirstLetter(firstName) + ' '}
+                    {lastName && capitalizeFirstLetter(lastName)}
                 </h1>
                 {!isEditFormVisible && (
                     <button id="edit-name-btn" onClick={toggleEditForm} className="edit-button">
@@ -71,11 +88,19 @@ const User = () => {
             {isEditFormVisible && (
                 <form onSubmit={e => submitEditNameForm(e)} id="edit-name-form" className="d-none">
                     <div>
+                        {isError.status && <p className="error-message">{isError.message}</p>}
                         <label htmlFor="firstName">Prénom : </label>
-                        <input onChange={e => handleChange(e)} id="firstName" type="text" name="firstName" required={true} />
+                        <input
+                            onChange={e => handleChange(e)}
+                            id="firstName"
+                            type="text"
+                            name="firstName"
+                            required={true}
+                            autoComplete="given-name"
+                        />
 
                         <label htmlFor="lastName">Nom : </label>
-                        <input onChange={e => handleChange(e)} id="lastName" type="text" name="lastName" required={true} />
+                        <input onChange={e => handleChange(e)} id="lastName" type="text" name="lastName" required={true} autoComplete="family-name" />
 
                         <button type="submit" className="edit-button">
                             Valider

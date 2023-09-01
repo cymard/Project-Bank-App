@@ -7,7 +7,9 @@ import { logoutUser } from '../../actions/user.action';
 const Header = () => {
     const dispatch = useDispatch();
     const token = useSelector(state => state.token);
+    const firstName = useSelector(state => state.firstName);
     const handleLogout = () => dispatch(logoutUser());
+    const capitalizeFirstLetter = word => word.charAt(0).toUpperCase() + word.slice(1);
 
     return (
         <nav className="main-nav">
@@ -25,7 +27,7 @@ const Header = () => {
                     <>
                         <Link to="/profile" className="main-nav-item">
                             <i className="fa fa-user-circle"></i>
-                            Tony
+                            {firstName && capitalizeFirstLetter(firstName)}
                         </Link>
                         <Link onClick={handleLogout} to="/" className="main-nav-item">
                             <i className="fa fa-sign-out"></i>
