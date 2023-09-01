@@ -58,11 +58,25 @@ const SignIn = () => {
                 <form onSubmit={e => handleSubmit(e)}>
                     <div className="input-wrapper">
                         <label htmlFor="username">Username</label>
-                        <input onChange={e => handleChange(e)} value={formData.username} name="username" type="text" id="username" />
+                        <input
+                            onChange={e => handleChange(e)}
+                            value={formData.username}
+                            name="username"
+                            type="text"
+                            id="username"
+                            autoComplete="username"
+                        />
                     </div>
                     <div className="input-wrapper">
                         <label htmlFor="password">Password</label>
-                        <input onChange={e => handleChange(e)} value={formData.password} name="password" type="password" id="password" />
+                        <input
+                            onChange={e => handleChange(e)}
+                            value={formData.password}
+                            name="password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                        />
                     </div>
                     <div className="input-remember">
                         <input type="checkbox" id="remember-me" />
